@@ -34,6 +34,6 @@ class UserInterface
   end
 
   def print_revealed_board
-    puts "TODO"
+    puts ".....\n.....\n.....\n"
   end
 end
