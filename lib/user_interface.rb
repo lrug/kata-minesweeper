@@ -37,33 +37,36 @@ class UserInterface
   def print_revealed_board
     @size[1].times do |y|
       @size[0].times do |x|
-        render_cell (x,y)
+        render_cell(x,y)
       end
       puts
     end
   end
 
-  def render_cell (x,y)
-    if(mine_at(x,y)) 
+  def render_cell(x,y)
+    if mine_at?(x,y)
       print "*"
+    elsif @mines.empty? 
+      print '.' 
     else
-      print neighbours(x,y)
+      if neighbouring_cells_includes_mine?(x,y)
+        print 1
+      else
+        print '.'
+      end
     end
   end
   
-  def neighbours(x,y)
-    if @mines.size == 0
-      '.'
-    else
-      1
+  def neighbouring_cells_includes_mine?(x,y)
+    # true
+    (-1..1).any? do |neigx|
+      (-1..1).any? do |neigy|
+        mine_at?(x+neigx, y+neigy)
+      end
     end
   end
   
-  def count_neighbours(x,y)
-    @counts[x][y]
-  end
-  
-  def mine_at(x,y)
+  def mine_at?(x,y)
     @mines.include?([x+1,y+1])
   end
 end
