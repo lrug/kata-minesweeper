@@ -8,6 +8,16 @@ class UserInterface
       puts cli_args_parser
       exit
     end
+    
+    @board = []
+    @size[1].times do
+      @board << Array.new(@size[0], 0)
+    end 
+    if @mines
+      @mines.each do |x, y|
+        @board[y - 1][x - 1] = '*'
+      end
+    end
   end
 
   def start
@@ -34,6 +44,25 @@ class UserInterface
   end
 
   def print_revealed_board
-    puts "TODO"
+    
+    output = ''
+
+    @board.each do |row|
+      row.each do |cell|
+        if cell == 0
+          if @mines
+            output += '1'
+          else
+            output += '.'
+          end
+        else
+          output += cell.to_s
+        end
+      end
+      output += "\n"
+    end
+    
+    puts output
   end
+    
 end
