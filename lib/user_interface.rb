@@ -43,28 +43,32 @@ class UserInterface
     end
   end
 
-  def render_cell(x,y)
-    if mine_at?(x,y)
+  def render_cell(x, y)
+    if mine_at?(x, y)
       "*"
     else
-      count = neighbouring_cells_count(x,y)
-      if count > 0
-        count.to_s
-      else
-        '.'
+      count = neighbouring_cells_count(x, y)
+      count > 0 ? count.to_s : '.'
+    end
+  end
+  
+  def each_neighbour(x, y)
+    (-1..1).each do |neigx|
+      (-1..1).each do |neigy|
+        yield x + neigx + 1, y + neigy + 1
       end
     end
   end
   
-  def neighbouring_cells_count(x,y)
-    # true
+  def neighbouring_cells_count(x, y)
     count = 0
-    (-1..1).each do |neigx|
-      (-1..1).each do |neigy|
-        count += 1 if mine_at?(x+neigx, y+neigy)
-      end
+    neighbours = []
+    each_neighbour(x, y) do |dx, dy|
+      # count += 1 if mine_at?(dx, dy)
+      neighbours << [dx, dy]
     end
-    count
+    (neighbours & @mines).size
+    # count
   end
   
   def mine_at?(x,y)
